@@ -1,10 +1,22 @@
-<?php require_once("includes/header.php")?>
+<?php 
+session_start();
+require_once("includes/header.php");
+if(isset($_SESSION["error"])){
+    $messErr = $_SESSION["error"];
+    unset($_SESSION["error"]);
+}
+if(isset($_SESSION["success"])){
+    $messSucc = $_SESSION["success"];
+    unset($_SESSION["success"]);
+}
+
+?>
 
     <!-- Navbar -->
-    <?php require_once("includes/navbar.php")?>
+    <?php require_once("includes/navbar.php") ?>
 
     <!-- Registration Form -->
-    <div class="container content mt-5">
+    <div class="container content my-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
@@ -13,31 +25,29 @@
                     </div>
                     <div class="card-body">
 
-                    <?php if(isset($_GET["success"])){?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong><?php echo $_GET["success"]; ?></strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<?php }?>
-
-<?php if(isset($_GET["error"])){ ?>
-<div class="alert alert-danger alert-dismissible fade show" role="alert">
-<strong><?php echo $_GET["error"]; ?></strong>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-<?php } ?>
+                    <?php if(isset($messSucc)){ ?>
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong><?php echo $messSucc; ?></strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php } ?>
 
 
+                    <?php if(isset($messErr)){ ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong><?php echo $messErr; ?></strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <?php } ?>
 
-
-                        <form action="authRegister.php" method="POST">
+                        <form action="app/auth/Register.php" method="POST">
                             <div class="mb-3">
-                                <label for="fullName" class="form-label">Full Name</label>
-                                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                                <label for="fullname" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter your full name" required>
                             </div>
                             <div class="mb-3">
-                                <label for="username" class="form-label">username</label>
-                                <input type="username" class="form-control" id="username" name="username" placeholder="Enter your email" required>
+                                <label for="username" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter your email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
@@ -60,5 +70,4 @@
         </div>
     </div>
 
-   <!-- Footer -->
-   <?php require_once("includes/footer.php")?>
+    <?php require_once("includes/footer.php")?>

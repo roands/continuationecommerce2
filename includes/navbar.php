@@ -7,7 +7,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        <a class="nav-link active" aria-current="page" href="/index.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="login.php">Login</a>
@@ -20,22 +20,24 @@
                     </li>
 
                      <!-- Dropdown for Signed-in User -->
-                      <?php if(isset($_SESSION["fullName"])){ ?>
-
+                      <?php if(isset($_SESSION["fullname"])){ ?>
                      <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <?php echo $_SESSION["fullName"]; ?>
+                            <?php echo $_SESSION["fullname"]; ?> 
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="userDropdown">
                             <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
                             <li><a class="dropdown-item" href="profile.html">Profile</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="logout.html">Logout</a></li>
+                            <li>
+                                <form action="/logout.php" method="POST">
+                                <button class="dropdown-item">Logout</button>
+                                </form>
+                            </li>
                         </ul>
                     </li>
                     <?php } ?>
-                    
                 </ul>
-           
+            </div>
         </div>
     </nav>
