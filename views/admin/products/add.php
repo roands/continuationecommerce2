@@ -1,3 +1,15 @@
+<?php
+session_start();
+require_once($_SERVER["DOCUMENT_ROOT"]."/app/config/Directories.php");
+require_once(ROOT_DIR."includes/header.php");
+
+?>
+   <?php require_once(ROOT_DIR."includes/navbar.php"); ?>
+
+
+   <?php require_once(__DIR__."/../../components/page-guard.php"); ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,6 +51,9 @@
             </div>
         </div>
     </nav>
+    
+    
+    <?php require_once(__DIR__."/../../components/page-guard.php"); ?>
 
     <!-- Product Maintenance Form -->
     <div class="container my-5">
@@ -113,7 +128,4 @@
         </form>
     </div>
 
-    <!-- Bootstrap 5 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <?php require_once(ROOT_DIR."includes/footer.php"); ?>

@@ -1,6 +1,8 @@
 <?php 
 session_start();
-require_once("includes/header.php");
+require_once(__DIR__."/app/config/Directories.php"); 
+require_once(ROOT_DIR."includes/header.php");
+
     if(isset($_SESSION["error"])){
         $messErr = $_SESSION["error"];
         unset($_SESSION["error"]);
@@ -65,4 +67,4 @@ require_once("includes/header.php");
     
     
 
-    <?php require_once("includes/footer.php")?>
+    <?php require_once(ROOT_DIR."includes/footer.php"); ?>
