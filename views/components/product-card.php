@@ -8,7 +8,12 @@
                         <p class="card-text">Stock: <?php echo $product["stocks"]; ?></p>
                         <p class="card-text">Total Price: <?php echo number_format($product["total_price"],2); ?></p>
                         <a href="#" class="btn btn-primary">Edit Product</a>
-                        <a href="#" class="btn btn-danger">Delete Product</a>
+
+                        <form action= "<?php echo BASE_URL;?>app/product/delete_product.php" class="d-inline" method = "POST">
+                        <input type ="hidden" name="id" value="<?php echo $product["id"]; ?>">
+                        
+                        
+                        <button href="#" class="btn btn-danger" onlick="return confirm('Are you sure you want to delete this record?')" >Delete Product</button>
                     </div>
                 </div>
             </div>
