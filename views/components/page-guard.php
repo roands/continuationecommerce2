@@ -9,7 +9,11 @@
             <a href="login.html" class="btn btn-primary">Go to Login</a>
         </div>
     </div> 
+
+
+<?php require_once(ROOT_DIR."includes/footer.php"); ?> 
 <?php 
 exit;
 }
+
 ?>
