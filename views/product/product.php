@@ -1,66 +1,73 @@
 <?php
-    session_start();
-    require_once($_SERVER["DOCUMENT_ROOT"]."/app/config/Directories.php");
-
-    include(ROOT_DIR."app/config/DatabaseConnect.php");
+   session_start();
+   require_once($_SERVER["DOCUMENT_ROOT"]."/app/config/Directories.php");
+   
+   include(ROOT_DIR."app/config/DatabaseConnect.php");
     $db = new DatabaseConnect();
     $conn = $db->connectDB();
 
-
-    $product= [];
+    $product = [];
     $id = @$_GET['id'];
-    $category = ["1" => "Electronics", "2" => "Fashion", "3"=> "Home Appliances"];
+    $category = ["1" => "electronics", "2" => "fashion", "3" => "home appliance", "4" => "Ulam"];
 
     try {
-        $sql  = "SELECT * FROM products WHERE products.id = $id ";
+
+        $sql = "SELECT * FROM products WHERE products.id = $id"; //select statement here
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-        $product = $stmt->fetch();
-        
+        $product =$stmt->fetch();
 
     } catch (PDOException $e){
-       echo "Connection Failed: " . $e->getMessage();
-       $db = null;
-    }
+        echo "Connection Failed: " . $e->getMessage();
+        $db = null;
+     }
+       
 
 
+   
+   require_once(ROOT_DIR."includes/header.php");
 
-    require_once(ROOT_DIR."includes/header.php");
-
-    if(isset($_SESSION["error"])){
-        $messErr = $_SESSION["error"];
-        unset($_SESSION["error"]);
+   if(isset($_SESSION["error"])){
+    $messErr = $_SESSION["error"];
+    unset($_SESSION["error"]);
 }
-    if(isset($_SESSION["success"])){
-        $messSucc = $_SESSION["success"];
-        unset($_SESSION["success"]);
+if(isset($_SESSION["success"])){
+    $messSucc = $_SESSION["success"];
+    unset($_SESSION["success"]);
 }
+
 ?>
-   <?php require_once(ROOT_DIR."includes/navbar.php"); ?>
- <!-- Product Details -->
+
+     <!-- Navbar -->
+     <?php require_once(ROOT_DIR."includes/navbar.php"); ?>
+
+    <!-- Product Details -->
     <div class="container my-5 bg-bpod">
         <div class="container mt-5">
 
-        <?php if(isset($messSucc)){ ?>
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <!--Message Response-->
+
+        <?php if(isset($messSucc)){?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong><?php echo $messSucc; ?></strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    <?php } ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php }?>
 
-
-                    <?php if(isset($messErr)){ ?>
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong><?php echo $messErr; ?></strong>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                        <?php } ?>
+        <?php if(isset($messErr)){ ?>
+                   <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                       <strong><?php echo $messErr; ?></strong>
+                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        <?php } ?>
+            
 
             <div class="row">
                 <!-- Product Image -->
                 <div class="col-md-6">
-                    <img src="<?php echo BASE_URL.$product["image_url"]; ?>" alt="Product Image" class="img-fluid border border-warning border-5" style="height:500px">
+                    <img src=" <?php echo BASE_URL.$product["image_url"];?>" alt="Product Image" class="img-fluid border border-danger border-5" style="height:500px">
                 </div>
+
 
                 <!-- Product Information -->
                  
@@ -68,10 +75,9 @@
                     <form action = "<?php echo BASE_URL;?>app/cart/add_to_cart.php" method="POST">
                     <input type="hidden" class="form-control" id="id" name="id" value="<?php echo $product["id"]; ?>">
                     
-                        <h2><?php echo $product["product_name"] ?></h2>
-
+                        <h2><?php echo $product["product_name"]?></h2>
                         <div class="mb-3"><span class="badge text-bg-info"><?php echo $category[$product["category_id"]];?></span></div>
-                        <p class="lead text-warning fw-bold"> <?php echo number_format ($product["unit_price"],2)?></p>
+                        <p class="lead text-warning fw-bold">"<?php echo number_format ($product["unit_price"],2)?>"</p>
                         <p><?php echo $product["product_description"]?></p>
 
                         <!-- Quantity Selection -->
@@ -81,13 +87,13 @@
                                 <button class="btn btn-outline-secondary" type="button" id="decrement-btn">-</button>
                                 <input type="number" id="quantity" name="quantity" class="form-control text-center" value="1" min="1" max="10" style="max-width: 60px;">
                                 <button class="btn btn-outline-secondary" type="button" id="increment-btn">+</button>
-                                <span class="input-group-text">/ Remaining Stocks:<?php echo $product["stocks"] ?></span>
+                                <span class="input-group-text">/ Remaining Stocks: <?php echo $product["stocks"]?></span>
                             </div>
                         </div>
 
                         <!-- Add to Cart Button -->
                         <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-primary btn-lg">Add to Cart</button>
+                            <button type="submit" class="btn btn-primary btn-lg" <?php echo ($product["stocks"] <= 0 ? "disabled" : "")?>><?php echo ($product["stocks"] <= 0 ? "Soldout" : "Add to Cart")?></button>
                         </div>
                     
                 </div>
