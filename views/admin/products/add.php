@@ -34,6 +34,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php } ?>
+        
         <form action="<?php echo BASE_URL;?>app/product/create_product.php" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <!-- Left Column: Product Image -->
