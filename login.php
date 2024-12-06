@@ -1,4 +1,9 @@
 <?php 
+ini_set('display_errors','1');
+ini_set('display_start_up_errors','1');
+error_reporting(E_ALL);
+
+
 session_start();
 require_once(__DIR__."/app/config/Directories.php"); 
 require_once(ROOT_DIR."includes/header.php");
@@ -7,7 +12,7 @@ require_once(ROOT_DIR."includes/header.php");
         $messErr = $_SESSION["error"];
         unset($_SESSION["error"]);
     }
-
+    
     if(isset($_SESSION["success"])){
     $messSucc = $_SESSION["success"];
     unset($_SESSION["success"]);
@@ -42,7 +47,8 @@ require_once(ROOT_DIR."includes/header.php");
                         </div>
                         <?php } ?>
 
-                        <form action="app/auth/login.php" method="POST">
+                       
+                        <form action="app/auth/Login.php" method="POST">
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
