@@ -6,21 +6,34 @@
     $db = new DatabaseConnect();
     $conn = $db->connectDB();
 
+    /*if(!isset($_SESSION["username"])) {
+        header("Location: ".BASE_URL."login.php");
+        exit;
+    }*/
+
+    if(isset($_SESSION["success"])){
+        $messSucc = $_SESSION["success"];
+        unset($_SESSION["success"]);
+    }
+
+
+
     $carts= [];
-    $userId =$_SESSION["user_id"];
+    $userId = $_SESSION["user_id"] ?? header('Location: '.'login.php');
     $subtotal = 0;
     $purchaseTotal = 0;
     
 
     try {
 
-        $sql = "SELECT carts.id, products.product_name,carts.unit_price,
-         carts.quantity, carts.total_price "
-         . " FROM carts "
+        $sql = "SELECT carts.id, products.product_name,carts.quantity,
+         carts.unit_price, carts.total_price "
+        . " FROM carts "
         ." LEFT JOIN products ON products.id = carts.product_id"
-        ." WHERE carts.user_id = $userId AND carts.status = 0 ";
+        ." WHERE carts.user_id = $userId AND carts.status = 0 "; //select statement here
 
         $stmt = $conn->prepare($sql);
+        
         $stmt->execute();
         $carts =$stmt->fetchAll();
 
@@ -44,24 +57,25 @@ if(isset($_SESSION["success"])){
 }
 
 ?>
+
     <!-- Navbar -->
     <?php require_once("includes/navbar.php")?>
-
+   
     <!-- Shopping Cart -->
     <div class="container content mt-5">
-    <?php if(isset($messSucc)){ ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong><?php echo $messSucc; ?></strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php } ?>
 
+    <?php if(isset($messSucc)){?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong><?php echo $messSucc; ?></strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+       </div>
+       <?php }?>
 
         <?php if(isset($messErr)){ ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong><?php echo $messErr; ?></strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+                   <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                   <strong><?php echo $messErr; ?></strong>
+                   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
         <?php } ?>
 
         <div class="row">
@@ -116,9 +130,12 @@ if(isset($_SESSION["success"])){
                                 <hr>
                                 <h5>Total: <span class="float-end"><?php echo number_format($subtotal + 50,2); ?></span></h5>
 
-                            <input type="hidden" class="form-control" name="total_order" value="<?php echo $subtotal; ?>">
-                            <input type="hidden" class="form-control" name="delivery_fee" value="50">
-                            <input type="hidden" class="form-control" name="total_amount" value="<?php echo ($subtotal + 50); ?>">
+                        <!-- actual field to send to backend -->
+                         <input type = "hidden" class="form-control" name="total_order" value="<?php echo $subtotal; ?>">
+                         <input type = "hidden" class="form-control" name="delivery_fee" value="50">
+                         <input type = "hidden" class="form-control" name="total_amount" value="<?php echo ($subtotal + 50); ?>">
+
+
 
                         <!-- Payment Method Selection -->
                         <div class="mt-4">
@@ -133,7 +150,7 @@ if(isset($_SESSION["success"])){
                         <!-- Payment Details -->
                         <div class="mt-3">
                             <label for="cardNumber" class="form-label">Card/Account Number</label>
-                            <input type="text" class="form-control" id="cardNumber" name ="card_number" placeholder="Enter your card or account number" required>
+                            <input type="text" class="form-control" id="cardNumber" name="card_number" placeholder="Enter your card or account number" required>
                         </div>
 
                         <!-- Confirm Payment Button -->
@@ -142,7 +159,8 @@ if(isset($_SESSION["success"])){
                         
                         
                         </div>
-                        </form>
+
+                               </form>
 
                         <?php } else { ?>
 
@@ -160,3 +178,4 @@ if(isset($_SESSION["success"])){
 
    <!-- Footer -->
    <?php require_once("includes/footer.php")?>
+   
